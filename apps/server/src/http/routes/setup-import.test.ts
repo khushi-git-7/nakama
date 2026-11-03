@@ -498,7 +498,7 @@ describe("setup import routes", () => {
     try {
       dataPortability.decodeArchiveRequestBytes(archive);
     } catch (error) {
-      genericError = (error as Error).message;
+      genericError = error instanceof Error ? error.message : "";
     }
 
     const send = (route: string) =>
