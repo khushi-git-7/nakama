@@ -143,6 +143,7 @@ export async function startScheduledBackups(options: {
         console.error(
           `Nakama backup failed: ${error instanceof Error ? error.message : String(error)}`
         );
+
         if (error instanceof NakamaApiError && error.status === 409) {
           try {
             await recordBackupError(options.dir, error.message);
