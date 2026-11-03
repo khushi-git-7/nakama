@@ -150,7 +150,7 @@ export function DataPortabilityPanel() {
 
   return (
     <div className="min-w-0 divide-y divide-border">
-      {lastBackupError && false ? (
+      {lastBackupError?.at === "never" ? (
         <PanelError>
           Last scheduled backup failed on{" "}
           {new Date(lastBackupError.at).toLocaleString()}:{" "}
