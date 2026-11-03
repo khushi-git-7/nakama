@@ -39,13 +39,9 @@ export async function readBackupError(
   return parsed.success ? parsed.data : null;
 }
 
-async function recordBackupError(dir: string, error: unknown): Promise<void> {
-  if (!(error instanceof NakamaApiError && error.status === 409)) {
-    return;
-  }
-
+async function recordBackupError(dir: string, message: string): Promise<void> {
   const path = join(dir, ERROR_FILE);
-  const record = { at: new Date().toISOString(), message: error.message };
+  const record = { at: new Date().toISOString(), message };
   await writeFile(`${path}.tmp`, JSON.stringify(record), { mode: 0o600 });
   await rename(`${path}.tmp`, path);
 }
@@ -147,12 +143,15 @@ export async function startScheduledBackups(options: {
         console.error(
           `Nakama backup failed: ${error instanceof Error ? error.message : String(error)}`
         );
-        await recordBackupError(options.dir, error).catch(
-          (recordError: unknown) =>
+        if (error instanceof NakamaApiError && error.status === 409) {
+          try {
+            await recordBackupError(options.dir, error.message);
+          } catch (recordError) {
             console.error(
               `Nakama cannot record the backup error: ${recordError instanceof Error ? recordError.message : String(recordError)}`
-            )
-        );
+            );
+          }
+        }
       }
 
       schedule(DAY_MS);

@@ -190,6 +190,7 @@ describe("data portability routes", () => {
         exportZip: () => Promise.reject(blocked),
         key: Buffer.alloc(32, 4),
       });
+
       await Bun.sleep(50);
       stop();
 
