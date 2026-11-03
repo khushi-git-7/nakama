@@ -11,6 +11,7 @@ import {
 import * as dataPortability from "../../services/data-portability";
 import {
   createNakamaDataExport,
+  decodeArchiveRequestBytes,
   MAX_IMPORT_ARCHIVE_BYTES,
   MAX_IMPORT_ENTRIES,
   previewNakamaDataImport,
@@ -496,7 +497,7 @@ describe("setup import routes", () => {
     let genericError = "";
 
     try {
-      dataPortability.decodeArchiveRequestBytes(archive);
+      decodeArchiveRequestBytes(archive);
     } catch (error) {
       genericError = error instanceof Error ? error.message : "";
     }
