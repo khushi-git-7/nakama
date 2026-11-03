@@ -336,13 +336,9 @@ export function registerSessionRoutes(
   });
 
   const sessionListQuerySchema = z.object({
-    channel: agentChannelSchema.optional().openapi({
-      description:
-        "Single-channel filter. One of `channel` or `channels` is required.",
-    }),
+    channel: agentChannelSchema.optional(),
     channels: z.string().optional().openapi({
-      description:
-        "Comma-separated channels, listed as one merged list. One of `channel` or `channels` is required.",
+      description: "Comma-separated channels, listed as one merged list.",
     }),
     cursor: z.string().optional().openapi({
       description: "`nextCursor` from the previous page.",
